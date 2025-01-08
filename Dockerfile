@@ -5,18 +5,18 @@ FROM alibaba-cloud-linux-3-registry.cn-hangzhou.cr.aliyuncs.com/alinux3/python:3
 # Set the working directory in the container
 WORKDIR /app
 
-# Add Aliyun's APT sources
-RUN sed -i 's@deb.debian.org@mirrors.aliyun.com@g' /etc/apt/sources.list && \
-    sed -i 's@security.debian.org@mirrors.aliyun.com@g' /etc/apt/sources.list
+# # Add Aliyun's APT sources
+# RUN sed -i 's@deb.debian.org@mirrors.aliyun.com@g' /etc/apt/sources.list && \
+#     sed -i 's@security.debian.org@mirrors.aliyun.com@g' /etc/apt/sources.list
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    libssl-dev \
-    libffi-dev \
-    python3-dev \
-    git \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+# # Install system dependencies
+# RUN apt-get update && apt-get install -y \
+#     build-essential \
+#     libssl-dev \
+#     libffi-dev \
+#     python3-dev \
+#     git \
+#     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Copy the local application files to the container
 COPY . /app
