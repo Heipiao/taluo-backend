@@ -23,10 +23,10 @@ COPY . /app
 
 # Install Python dependencies
 # Generate requirements.txt if not already present
-RUN if [ ! -f requirements.txt ]; then \
-        pip install --no-cache-dir pipreqs && \
-        pipreqs /app --force; \
-    fi
+# RUN if [ ! -f requirements.txt ]; then \
+#         pip install --no-cache-dir pipreqs && \
+#         pipreqs /app --force; \
+#     fi
 
 # Use Aliyun's PyPI mirror for faster installation
 RUN pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/ && \
@@ -36,4 +36,4 @@ RUN pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/ && \
 EXPOSE 5000
 
 # Run the application (adjust as needed)
-CMD python run.py
+CMD python src/run.py
