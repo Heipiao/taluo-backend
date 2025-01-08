@@ -5,11 +5,11 @@ FROM alibaba-cloud-linux-3-registry.cn-hangzhou.cr.aliyuncs.com/alinux3/python:3
 WORKDIR /app
 
 # Install additional system utilities without modifying yum repositories
-RUN yum update -y && \
-    yum install -y \
-    ps \
-    vim \
-    && yum clean all
+# RUN yum update -y && \
+#     yum install -y \
+#     ps \
+#     vim \
+#     && yum clean all
 
 # Copy the local application files to the container
 COPY . /app
