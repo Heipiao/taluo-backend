@@ -31,4 +31,4 @@ def login_user(email, password):
     if not user or not check_password_hash(user.password_hash, password):
         return {"error": "Invalid email or password"}, 401
 
-    return {"message": f"Welcome {user.username}!", "user_id": user.id}, 200
+    return {"username": user.username, "user_id": user.id}, 200
