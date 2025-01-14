@@ -1,5 +1,7 @@
 import os
 from flask import Blueprint, request, jsonify
+from flask_cors import CORS, cross_origin
+
 import json
 from volcengine.ApiInfo import ApiInfo
 from volcengine.Credentials import Credentials
@@ -32,6 +34,7 @@ service = Service(k_service_info, k_api_info)
 bp = Blueprint('translate', __name__)
 
 @bp.route('/basic', methods=['POST'])
+@cross_origin() 
 def translate():
     try:
         # 获取请求中的 JSON 数据
