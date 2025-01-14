@@ -60,8 +60,10 @@ def create_app():
     with app.app_context():
         from routes.user_routes import bp as user_bp
         from routes.system_routes import bp as system_bp
+        from routes.product_routes import bp as product_bp
         app.register_blueprint(user_bp, url_prefix='/user')  # 设置用户模块 URL 前缀
         app.register_blueprint(system_bp, url_prefix='/system')  # 设置系统模块 URL 前缀
+        app.register_blueprint(product_bp, url_prefix='/translate')  # 设置系统模块 URL 前缀
 
         # 自动创建数据库表
         db.create_all()
