@@ -1,15 +1,21 @@
-from flask import Flask
+from flask import Flask, request
+
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 from urllib.parse import quote
 import os
 import logging
 
+from extensions import limiter  # 导入公共的 limiter 实例
+
 # 设置日志格式，包含时间、日志级别、文件名和行号
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s'
 )
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 db = SQLAlchemy()
 
@@ -25,6 +31,9 @@ def create_app():
     password = quote(os.getenv('DB_PASSWORD', ''))
     database = os.getenv('DB_NAME')
     port = os.getenv('DB_PORT', 3306)
+
+
+
 
     # 检查环境变量是否正确加载
     if not all([host, user, password, database]):
@@ -50,9 +59,16 @@ def create_app():
         }
     }
 
+    try:
+        limiter.init_app(app)
+        logger.info("Limiter initialized successfully.")
+    except Exception as e:
+        logger.error(f"Limiter initialization failed: {e}", exc_info=True)
+        raise e
+    
+
     # 初始化数据库
     db.init_app(app)
-
     # 配置日志
     logging.info(f"Database URI: {db_uri}")
 
@@ -61,6 +77,7 @@ def create_app():
         from routes.user_routes import bp as user_bp
         from routes.system_routes import bp as system_bp
         from routes.product_routes import bp as product_bp
+ 
         app.register_blueprint(user_bp, url_prefix='/user')  # 设置用户模块 URL 前缀
         app.register_blueprint(system_bp, url_prefix='/system')  # 设置系统模块 URL 前缀
         app.register_blueprint(product_bp, url_prefix='/translate')  # 设置系统模块 URL 前缀

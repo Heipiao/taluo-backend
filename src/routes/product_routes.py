@@ -8,9 +8,12 @@ from volcengine.Credentials import Credentials
 from volcengine.ServiceInfo import ServiceInfo
 from volcengine.base.Service import Service
 
+from extensions import limiter
+
 # 从环境变量中获取 AccessKey 和 SecretKey
 k_access_key = os.getenv('VOLC_ACCESS_KEY', 'default_access_key')
 k_secret_key = os.getenv('VOLC_SECRET_KEY', 'default_secret_key')
+TRANSLATE_REQUEST_LIMIT =  os.getenv('TRANSLATE_REQUEST_LIMIT', '2 per day')
 
 # 初始化翻译服务的配置信息
 k_service_info = ServiceInfo(
@@ -32,9 +35,13 @@ service = Service(k_service_info, k_api_info)
 
 # 创建蓝图
 bp = Blueprint('translate', __name__)
+# 获取限流配置
+
+# 初始化 Flask-Limiter
 
 @bp.route('/basic', methods=['POST'])
-@cross_origin() 
+@cross_origin()
+@limiter.limit(TRANSLATE_REQUEST_LIMIT)
 def translate():
     try:
         # 获取请求中的 JSON 数据
